@@ -1,8 +1,10 @@
 <template>
 <div class="task-list" :id="id">
-<div class="task-list__name">{{ name }}</div>
-<div class="task-list__date">{{ created }}</div>
-<div class="completed" v-if="completed">✓</div>
+<div class="task-list__number">{{ task_list.id }}</div>
+<div class="task-list__name">{{ task_list.name }}</div>
+<div class="task-list__date">{{ task_list.created }}</div>
+<div class="completed" v-if="task_list.completed">✓</div>
+<div class="completed" v-else>x</div>
 </div>
 </template>
 
@@ -10,10 +12,7 @@
 export default {
   name: 'TaskList',
   props: {
-    name: String,
-    completed: Boolean,
-    id: Number,
-    created: Date,
+    task_list: Object
   }
 }
 </script>

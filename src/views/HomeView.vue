@@ -2,15 +2,14 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
     <div class="tasks-lists">
-      <TaskListItem 
-      v-for="item in lists"
-      :id="item.id"
-      :name="item.name"
-      :completed="item.completed"
-      :created="item.created"
-
-      >
+      <TaskListItem v-for="list in lists" :task_list="task_list">
       </TaskListItem>
+    </div>
+    <div class="add_list">
+      <h3>Добавить список</h3>
+      <label for="list_name">Имя списка</label>
+      <input id="list_name" v-model="task_list_name" placeholder="Список задач">
+      <button @click="addTaskList">Добавить</button>
     </div>
   </div>
 </template>
@@ -18,6 +17,7 @@
 <script>
 // @ is an alias to /src
 import TaskListItem from '@/components/TaskListItem.vue'
+import {instance} from '@/api.js';
 
 export default {
   name: 'HomeView',
@@ -29,21 +29,21 @@ export default {
   },
   data: function () {
     return {
-      lists: [
-        {
-          id: 1,
-          name: 'Тестовый список задач',
-          completed: false,
-          created: new Date(2023, 0, 1, 0, 0, 0)
-        },
-        {
-          id: 2,
-          name: 'Тестовый список задач',
-          completed: true,
-          created: new Date(2023, 0, 3, 0, 0, 0)
-        },
-      ]
+      lists: [],
+      task_list_name: ''
     };
+  },
+  mounted() {
+    instance.get('/tasks/lists/')
+    .then(response => (this.lists = response.data))
+  },
+  methods: {
+    addTaskList() {
+      if (this.task_list_name !== '') {
+        instance.post('/tasks/lists/', {'name': this.task_list_name})
+        .then(response => this.lists.push(response.data))
+      }
+    }
   }
 }
 </script>

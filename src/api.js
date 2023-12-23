@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const instance = axios.create({
-    baseURL: "https://api.coindesk.com/v1/"
+    baseURL: "http://localhost:8000/"
 });
